@@ -18,6 +18,7 @@ const App: Component = () => {
   onMount(async () => {
     setData((await fetchData()).data);
   });
+  
   return (
     <table>
         <thead>

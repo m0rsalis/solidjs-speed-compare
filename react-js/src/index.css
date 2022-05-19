@@ -7,7 +7,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+table {
+  width: 100%;
+}
+
+thead {
+  background: black;
+  color: white;
+}
+
+.highlightedRow {
+  background: grey;
+  color: white;
 }

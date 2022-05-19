@@ -1,11 +1,18 @@
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
 
+export class TableRow {
+  id: number | undefined;
+  name: string | undefined;
+  description: string | undefined;
+  createdDate: Date | undefined;
+}
+
 const fetchData = async () =>
-  axios.get<TableData>('http://localhost:5195/data');
+  axios.get<TableRow[]>('http://localhost:5195/data');
 
 const App: FC = () => {
-  const [data, setData] = useState<TableData>();
+  const [data, setData] = useState<TableRow[]>();
   const [selectedId, setSelectedId] = useState<string>();
 
   useEffect(() => {
@@ -13,39 +20,27 @@ const App: FC = () => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center flex-col p-10">
-        <h2 className=" font-medium text-4xl my-5">Very usefull data</h2>
-        <table style={{ width: '1000px' }}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-          {data?.results?.map((tableRow, index) => (
-          <tr id={tableRow.id?.toString()} style={selectedId === tableRow.id?.toString() ? {background:"grey"} : {background:"white"}} onMouseEnter={() => setSelectedId(tableRow.id?.toString())}>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data?.map((tableRow) => (
+          <tr id={tableRow.id?.toString()} 
+            className={selectedId === tableRow.id?.toString() ? "highlightedRow" : ""} 
+            onMouseEnter={() => setSelectedId(tableRow.id?.toString())}>
             <td>{tableRow.id}</td>
             <td>{tableRow.name}</td>
             <td>{tableRow.description}</td>
           </tr>
         ))}
-          </tbody>
-        </table>
-      </div>
+      </tbody>
+    </table>
   );
 };
 
 export default App;
-
-export class TableData {
-  results: TableRow[] | undefined;
-}
-
-export class TableRow {
-  id: number | undefined;
-  name: string | undefined;
-  description: string | undefined;
-  createdDate: Date | undefined;
-}
