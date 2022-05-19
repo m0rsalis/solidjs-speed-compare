@@ -6,11 +6,6 @@ namespace DataAPI.Controllers
     [Route("[controller]")]
     public class DataController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
         private readonly ILogger<DataController> _logger;
 
         public DataController(ILogger<DataController> logger)
@@ -19,18 +14,15 @@ namespace DataAPI.Controllers
         }
 
         [HttpGet]
-        public TableData Get()
+        public IEnumerable<Data> Get()
         {
-            return new TableData
+            return Enumerable.Range(1, 3000).Select(index => new Data
             {
-                Results = Enumerable.Range(1, 3000).Select(index => new Data
-                {
-                    Id = index,
-                    Name = $"record-{index}",
-                    CreatedDate = DateTime.Now.AddDays(index),
-                    Description = RandomString(200)
-                }).ToArray()
-            };
+                Id = index,
+                Name = $"record-{index}",
+                CreatedDate = DateTime.Now.AddDays(index),
+                Description = RandomString(200)
+            }).ToArray();
         }
 
         public static string RandomString(int length)
