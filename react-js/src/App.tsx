@@ -1,18 +1,18 @@
 import { FC, useEffect, useState } from "react";
 import axios from "axios";
 
-class TableRow {
+class Hound {
   id: number | undefined;
   name: string | undefined;
-  description: string | undefined;
-  createdDate: Date | undefined;
+  breed: string | undefined;
+  description!: string;
 }
 
-const fetchData = async () =>
-  axios.get<TableRow[]>('http://localhost:5195/data');
+const fetchData = async() =>
+  axios.get<Hound[]>('http://localhost:5195/data');
 
 const App: FC = () => {
-  const [data, setData] = useState<TableRow[]>();
+  const [data, setData] = useState<Hound[]>();
   const [selectedId, setSelectedId] = useState<string>();
 
   useEffect(() => {
@@ -23,8 +23,8 @@ const App: FC = () => {
     <table>
       <thead>
         <tr>
-          <th>ID</th>
           <th>Name</th>
+          <th>Breed</th>
           <th>Description</th>
         </tr>
       </thead>
@@ -33,8 +33,8 @@ const App: FC = () => {
           <tr id={tableRow.id?.toString()} 
             className={selectedId === tableRow.id?.toString() ? "highlightedRow" : ""} 
             onMouseEnter={() => setSelectedId(tableRow.id?.toString())}>
-            <td>{tableRow.id}</td>
             <td>{tableRow.name}</td>
+            <td>{tableRow.breed}</td>
             <td>{tableRow.description}</td>
           </tr>
         ))}

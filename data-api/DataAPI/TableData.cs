@@ -2,6 +2,6 @@
 {
     public class TableData
     {
-        public Data[] Results { get; set; }
+        public Hound[] Results { get; set; }
     }
 }

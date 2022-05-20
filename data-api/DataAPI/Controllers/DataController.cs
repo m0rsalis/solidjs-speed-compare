@@ -1,4 +1,6 @@
+using DataAPI.Dto;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace DataAPI.Controllers
 {
@@ -6,30 +8,40 @@ namespace DataAPI.Controllers
     [Route("[controller]")]
     public class DataController : ControllerBase
     {
-        private readonly ILogger<DataController> _logger;
+        private List<string> Hounds = new List<string> { "Filip", "Vojta", "Martin", "Tom", "Honza", "Jirka" };
 
-        public DataController(ILogger<DataController> logger)
+        public DataController()
         {
-            _logger = logger;
         }
 
         [HttpGet]
-        public IEnumerable<Data> Get([FromQuery]int count = 100)
+        public async Task<IEnumerable<Hound>> Get([FromQuery]int count = 100)
         {
-            return Enumerable.Range(1, count).Select(index => new Data
+            var dogBreeds = await GetDogBreeds();
+
+            return Enumerable.Range(1, count).Select(index => new Hound
             {
                 Id = index,
-                Name = $"record-{index}",
-                CreatedDate = DateTime.Now.AddDays(index),
+                Name = Hounds[Random.Shared.Next(Hounds.Count)],
+                Breed = dogBreeds[Random.Shared.Next(dogBreeds.Count)],
                 Description = RandomString(200)
             }).ToArray();
         }
 
-        public static string RandomString(int length)
+        private static string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[Random.Shared.Next(s.Length)]).ToArray());
+        }
+
+        private async Task<List<string>> GetDogBreeds()
+        {
+            var client = new HttpClient();
+            var response = await client.GetStringAsync("https://dog.ceo/api/breeds/list/all");
+
+            var dogBreedsResponse = JsonSerializer.Deserialize<DogBreedsResponse>(response);
+            return dogBreedsResponse.Breeds.Keys.ToList();
         }
     }
 }

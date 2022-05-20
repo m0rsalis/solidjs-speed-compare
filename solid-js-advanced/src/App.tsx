@@ -4,8 +4,8 @@ import axios from "axios";
 export class HoundDto {
   id: number | undefined;
   name: string | undefined;
+  breed: string | undefined;
   description!: string;
-  createdDate: Date | undefined;
 }
 
 const fetchData = async(count: number) =>
@@ -14,7 +14,7 @@ const fetchData = async(count: number) =>
 const App: Component = () => {
   const [data, setData] = createSignal<HoundDto[]>();
   const [selectedId, setSelectedId] = createSignal<string>();
-  const [descriptionFilter, setFilter] = createSignal<string>("");
+  const [nameFilter, setNameFilter] = createSignal<string>("");
   const [recordCount, setRecordCount] = createSignal<number>(100);
 
   onMount(async () => {
@@ -26,11 +26,11 @@ const App: Component = () => {
         <tr id={ tableRow.id?.toString() } 
             class={selectedId() === tableRow.id?.toString() ? "highlightedRow" : ""}
             style={
-                tableRow.description === undefined || 
-                tableRow.description.indexOf(descriptionFilter()) >= 0 ? "" : "display:none"} 
+                tableRow.name === undefined || 
+                tableRow.name.indexOf(nameFilter()) >= 0 ? "" : "display:none"} 
             onMouseEnter={() => setSelectedId(tableRow?.id?.toString())}>
-            <td>{tableRow.id}</td>
             <td>{tableRow.name}</td>
+            <td>{tableRow.breed}</td>
             <td>{tableRow.description}</td>
         </tr>
     );
@@ -44,11 +44,11 @@ const App: Component = () => {
     }
   }
 
-  const updateDescriptionFilter = () => {
-    const input = document.getElementById("description-filter") as HTMLInputElement;
+  const updateNameFilter = () => {
+    const input = document.getElementById("name-filter") as HTMLInputElement;
 
-    if (input && input.value) {
-      setFilter(input.value);
+    if (input) {
+      setNameFilter(input.value);
     }
   }
 
@@ -63,14 +63,14 @@ const App: Component = () => {
         <table>
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Name</th>
+                <th>Hound Name</th>
+                <th>Hound Breed</th>
                 <th>Description</th>
             </tr>
             <tr>
+                <th><input id="name-filter" style="width:80%;" value={nameFilter()} onKeyUp={updateNameFilter}/></th>
                 <th></th>
                 <th></th>
-                <th><input id="description-filter" style="width:80%;" value={descriptionFilter()} onKeyUp={updateDescriptionFilter}/></th>
             </tr>
             </thead>
             <tbody>
