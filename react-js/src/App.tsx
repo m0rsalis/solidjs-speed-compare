@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import axios from "axios";
 
-export class TableRow {
+class TableRow {
   id: number | undefined;
   name: string | undefined;
   description: string | undefined;

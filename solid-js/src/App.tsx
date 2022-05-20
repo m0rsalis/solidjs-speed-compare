@@ -1,7 +1,7 @@
 import { Component, createSignal, For, onMount } from 'solid-js';
 import axios from "axios";
 
-export class TableRow {
+class TableRow {
   id: number | undefined;
   name: string | undefined;
   description: string | undefined;
@@ -18,7 +18,7 @@ const App: Component = () => {
   onMount(async () => {
     setData((await fetchData()).data);
   });
-  
+
   return (
     <table>
         <thead>

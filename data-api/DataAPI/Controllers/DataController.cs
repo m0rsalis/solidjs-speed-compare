@@ -14,9 +14,9 @@ namespace DataAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Data> Get()
+        public IEnumerable<Data> Get([FromQuery]int count = 100)
         {
-            return Enumerable.Range(1, 3000).Select(index => new Data
+            return Enumerable.Range(1, count).Select(index => new Data
             {
                 Id = index,
                 Name = $"record-{index}",
