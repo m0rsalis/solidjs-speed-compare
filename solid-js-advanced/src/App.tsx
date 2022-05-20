@@ -1,7 +1,7 @@
 import { Component, createEffect, createSignal, For, onMount } from 'solid-js';
 import axios from "axios";
 
-export class HoundDto {
+export class Hound {
   id: number | undefined;
   name: string | undefined;
   breed: string | undefined;
@@ -9,10 +9,10 @@ export class HoundDto {
 }
 
 const fetchData = async(count: number) =>
-  axios.get<HoundDto[]>('http://localhost:5195/data?count=' + count);
+  axios.get<Hound[]>('http://localhost:5195/data?count=' + count);
 
 const App: Component = () => {
-  const [data, setData] = createSignal<HoundDto[]>();
+  const [data, setData] = createSignal<Hound[]>();
   const [selectedId, setSelectedId] = createSignal<string>();
   const [nameFilter, setNameFilter] = createSignal<string>("");
   const [recordCount, setRecordCount] = createSignal<number>(100);
@@ -21,13 +21,13 @@ const App: Component = () => {
     setData((await fetchData(recordCount())).data);
   });
 
-  function RenderDataRow(tableRow: HoundDto) {
+  function RenderDataRow(tableRow: Hound) {
     return (
         <tr id={ tableRow.id?.toString() } 
             class={selectedId() === tableRow.id?.toString() ? "highlightedRow" : ""}
             style={
-                tableRow.name === undefined || 
-                tableRow.name.indexOf(nameFilter()) >= 0 ? "" : "display:none"} 
+              !tableRow.name || tableRow.name.indexOf(nameFilter()) >= 0 ? "" : "display:none"
+            } 
             onMouseEnter={() => setSelectedId(tableRow?.id?.toString())}>
             <td>{tableRow.name}</td>
             <td>{tableRow.breed}</td>
@@ -68,7 +68,7 @@ const App: Component = () => {
                 <th>Description</th>
             </tr>
             <tr>
-                <th><input id="name-filter" style="width:80%;" value={nameFilter()} onKeyUp={updateNameFilter}/></th>
+                <th><input id="name-filter" style="width:95%;" value={nameFilter()} onKeyUp={updateNameFilter}/></th>
                 <th></th>
                 <th></th>
             </tr>

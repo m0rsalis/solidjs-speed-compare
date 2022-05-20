@@ -21,27 +21,27 @@ const App: Component = () => {
 
   return (
     <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Breed</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <For each={data()} fallback={<p>Loading...</p>}>
-            {(tableRow) => (
-              <tr id={tableRow.id?.toString()} 
-                class={selectedId() == tableRow.id?.toString() ? "highlightedRow" : ""} 
-                onMouseEnter={() => setSelectedId(tableRow?.id?.toString())}>
-                <td>{tableRow.name}</td>
-                <td>{tableRow.breed}</td>
-                <td>{tableRow.description}</td>
-              </tr>
-            )}
-          </For>
-        </tbody>
-      </table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Breed</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <For each={data()} fallback={<p>Loading...</p>}>
+          {(tableRow) => (
+            <tr id={tableRow.id?.toString()} 
+              class={selectedId() == tableRow.id?.toString() ? "highlightedRow" : ""} 
+              onMouseEnter={() => setSelectedId(tableRow?.id?.toString())}>
+              <td>{tableRow.name}</td>
+              <td>{tableRow.breed}</td>
+              <td>{tableRow.description}</td>
+            </tr>
+          )}
+        </For>
+      </tbody>
+    </table>
   );
 };
 

@@ -15,7 +15,7 @@ namespace DataAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Hound>> Get([FromQuery]int count = 100)
+        public async Task<IEnumerable<Hound>> Get([FromQuery]int count = 10000)
         {
             var dogBreeds = await GetDogBreeds();
 
@@ -24,15 +24,8 @@ namespace DataAPI.Controllers
                 Id = index,
                 Name = Hounds[Random.Shared.Next(Hounds.Count)],
                 Breed = dogBreeds[Random.Shared.Next(dogBreeds.Count)],
-                Description = RandomString(200)
+                Description = LoremNET.Lorem.Words(30, 35)
             }).ToArray();
-        }
-
-        private static string RandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-                .Select(s => s[Random.Shared.Next(s.Length)]).ToArray());
         }
 
         private async Task<List<string>> GetDogBreeds()
